@@ -1,4 +1,18 @@
 {
+  "name": "opintat/caseconverter",
+  "type": "library",
+  "description": "Case converter from camel to snake case",
+  "keywords": ["converter"],
+  "homepage": "https://github.com/opintat/caseconverter",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Oliver Pintat",
+      "email": "oliver@pintat.de",
+      "homepage": "https://www.pintat.de",
+      "role": "Developer"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "App\\": "src/",
