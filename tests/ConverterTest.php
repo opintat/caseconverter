@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Test;
 
-use App\Converter;
+use Opintat\Converter\Converter;
 use PHPUnit\Framework\TestCase;
 
 class ConverterTest extends TestCase
@@ -22,36 +22,11 @@ class ConverterTest extends TestCase
     }
 
     /**
-     * @dataProvider fromProvider
-     *
-     * @param mixed $from
-     */
-    public function testFrom($from): void
-    {
-        $this->converter->setFrom($from);
-
-        $this->assertSame($from, $this->converter->getFrom());
-    }
-
-    /**
-     * @return string[][]
-     */
-    public function fromProvider(): array
-    {
-        return [
-            ['test'],
-            ['Test'],
-            ['Test'],
-            ['TestIt'],
-        ];
-    }
-
-    /**
      * @dataProvider toSnakeCaseProvider
      */
     public function testToSnakeCase(string $from, string $expectedSnake): void
     {
-        $snakeCase = $this->converter->setFrom($from)->toSnakeCase();
+        $snakeCase = $this->converter->setFromCamelCase($from)->toSnakeCase();
 
         $this->assertSame($expectedSnake, $snakeCase);
     }
@@ -63,11 +38,36 @@ class ConverterTest extends TestCase
     {
         return [
             ['test', 'test'],
-            ['Test', 'test'],
-            ['TestIt', 'test_it'],
-            ['TestItNow', 'test_it_now'],
+            ['test', 'test'],
+            ['testIt', 'test_it'],
+            ['testItNow', 'test_it_now'],
             ['PDF', 'p_d_f'],
             ['OLIver', 'o_l_iver'],
+        ];
+    }
+
+    /**
+     * @dataProvider toPascalCaseProvider
+     */
+    public function testToPascal(string $from, string $expectedSnake): void
+    {
+        $snakeCase = $this->converter->setFromCamelCase($from)->toPascalCase();
+
+        $this->assertSame($expectedSnake, $snakeCase);
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function toPascalCaseProvider(): array
+    {
+        return [
+            ['test', 'Test'],
+            ['Test', 'Test'],
+            ['TestIt', 'TestIt'],
+            ['TestItNow', 'TestItNow'],
+            ['PDF', 'PDF'],
+            ['OLIver', 'OLIver'],
         ];
     }
 }

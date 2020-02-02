@@ -1,5 +1,5 @@
 test:
-	./vendor/bin/phpunit tests
+	./vendor/bin/phpunit --colors=always tests
 
 cs:
 	./vendor/bin/php-cs-fixer fix
