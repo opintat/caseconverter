@@ -1,5 +1,5 @@
 test:
-	./vendor/bin/phpunit --colors=always tests
+	./vendor/bin/phpunit --colors=always --coverage-html coverage tests
 
 cs:
 	./vendor/bin/php-cs-fixer fix
