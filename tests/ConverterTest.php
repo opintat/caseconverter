@@ -26,7 +26,7 @@ class ConverterTest extends TestCase
      */
     public function testToSnakeCase(string $from, string $expectedSnake): void
     {
-        $snakeCase = $this->converter->setFromCamelCase($from)->toSnakeCase();
+        $snakeCase = $this->converter->setFrom($from)->toSnakeCase();
 
         $this->assertSame($expectedSnake, $snakeCase);
     }
@@ -51,7 +51,7 @@ class ConverterTest extends TestCase
      */
     public function testToPascal(string $from, string $expectedSnake): void
     {
-        $snakeCase = $this->converter->setFromCamelCase($from)->toPascalCase();
+        $snakeCase = $this->converter->setFrom($from)->toPascalCase();
 
         $this->assertSame($expectedSnake, $snakeCase);
     }
@@ -69,5 +69,91 @@ class ConverterTest extends TestCase
             ['PDF', 'PDF'],
             ['OLIver', 'OLIver'],
         ];
+    }
+
+    /**
+     * @dataProvider toKebapCaseProvider
+     */
+    public function testToKebapCase(string $from, string $expectedKebap): void
+    {
+        $snakeCase = $this->converter->setFrom($from)->toKebapCase();
+
+        $this->assertSame($expectedKebap, $snakeCase);
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function toKebapCaseProvider(): array
+    {
+        return [
+            ['test', 'test'],
+            ['testIt', 'test-it'],
+            ['testItNow', 'test-it-now'],
+            ['pId', 'p-id'],
+            ['oLiver', 'o-liver'],
+        ];
+    }
+
+    /**
+     * @dataProvider toCamelCaseProvider
+     */
+    public function testToCamelCase(string $from, string $expectedKebap): void
+    {
+        $snakeCase = $this->converter->setFrom($from)->toCamelCase();
+
+        $this->assertSame($expectedKebap, $snakeCase);
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function toCamelCaseProvider(): array
+    {
+        return [
+            ['test', 'test'],
+            ['testIt', 'testIt'],
+            ['testItNow', 'testItNow'],
+            ['pId', 'pId'],
+            ['oLiver', 'oLiver'],
+        ];
+    }
+
+    /**
+     * @dataProvider fromProvider
+     */
+    public function testFrom(string $input, string $expectedResult): void
+    {
+        $result = $this->converter->setFrom($input)->toSnakeCase();
+
+        $this->assertSame($expectedResult, $result);
+    }
+
+    public function testSnakeCaseFrom(): void
+    {
+        $result = $this->converter->setFrom('snake_case')->toPascalCase();
+
+        $this->assertSame('SnakeCase', $result);
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function fromProvider(): array
+    {
+        return [
+            ['camelCase', 'camel_case'],
+            ['PascalCase', 'pascal_case'],
+            ['snake_case', 'snake_case'],
+            ['kebap-case', 'kebap_case'],
+        ];
+    }
+
+    public function testNotAllowedMethod(): void
+    {
+        $this->expectException(\Exception::class);
+
+        $name = 'toWrongCase';
+        $this->converter->setFrom('abc')->$name();
     }
 }

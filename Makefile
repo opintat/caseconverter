@@ -5,7 +5,9 @@ cs:
 	./vendor/bin/php-cs-fixer fix
 
 analyse:
-	./vendor/bin/phpstan analyse --level 6 src tests
+	./vendor/bin/phpstan analyse --level 8 src tests
 
 all: cs analyse test
 
+insights:
+	docker run -it --rm -v $(shell pwd):/app nunomaduro/phpinsights

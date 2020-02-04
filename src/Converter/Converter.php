@@ -4,62 +4,68 @@ declare(strict_types=1);
 
 namespace Opintat\Converter;
 
-class Converter
+use Opintat\Converter\Generator\GeneratorFactory;
+use Opintat\Converter\Splitter\SplitterFactory;
+
+/**
+ * @method toPascalCase() string
+ * @method toCamelCase()  string
+ * @method toKebapCase()  string
+ * @method toSnakeCase()  string
+ */
+final class Converter
 {
     /**
      * @var string[]
      */
-    private array $from;
+    private array $from = [];
 
-    public function setFromCamelCase(string $from): Converter
+    private GeneratorFactory $generatorFactory;
+
+    private SplitterFactory $splitterFactory;
+
+    private Detector $detector;
+
+    /**
+     * @var string[]
+     */
+    protected array $allowedMethods = [
+        'toPascalCase' => 'pascal',
+        'toCamelCase'  => 'camel',
+        'toKebapCase'  => 'kebap',
+        'toSnakeCase'  => 'snake',
+    ];
+
+    public function __construct(
+        ?GeneratorFactory $generatorFactory = null,
+        ?SplitterFactory $splitterFactory = null,
+        ?Detector $detector = null
+    ) {
+        $this->generatorFactory = $generatorFactory ?? new GeneratorFactory();
+        $this->splitterFactory = $splitterFactory ?? new SplitterFactory();
+        $this->detector = $detector ?? new Detector();
+    }
+
+    public function setFrom(string $from): Converter
     {
-        $parts = preg_split('/(?=[A-Z])/', $from);
-
-//        var_dump($parts);
-        if (! $parts[0]) {
-            array_shift($parts);
-        }
-
-        $result = [];
-
-        foreach ($parts as $part) {
-            $result[] = strtolower($part);
-        }
-
-        $this->from = $result;
+        $this->from = (new SplitterFactory())
+            ->create($this->detector->detect($from))
+            ->split($from);
 
         return $this;
     }
 
-    public function toSnakeCase(): string
+    /**
+     * @param mixed[] $arguments
+     */
+    public function __call(string $name, array $arguments): string
     {
-        return join('_', $this->from);
-    }
-
-    public function toCamelCase(): string
-    {
-        $camel = $this->from[0];
-
-        for ($i = 1; $i < count($this->from); ++$i) {
-            $camel .= $this->from[$i];
+        if (! in_array($name, array_keys($this->allowedMethods))) {
+            throw new \Exception(sprintf('Method %s not allowed!', $name));
         }
 
-        return $camel;
-    }
-
-    public function toPascalCase(): string
-    {
-        $camel = '';
-
-        for ($i = 0; $i < count($this->from); ++$i) {
-            $camel .= ucfirst($this->from[$i]);
-        }
-
-        return $camel;
-    }
-
-    public function toKebapCase(): string
-    {
-        return '';
+        return $this->generatorFactory
+            ->create($this->allowedMethods[$name])
+            ->generate($this->from);
     }
 }
