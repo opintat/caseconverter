@@ -5,7 +5,6 @@
   "keywords": ["converter"],
   "homepage": "https://github.com/opintat/caseconverter",
   "license": "MIT",
-  "minimum-stability": "dev",
   "authors": [
     {
       "name": "Oliver Pintat",
