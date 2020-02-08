@@ -1,5 +1,7 @@
 ![PHP Composer](https://github.com/opintat/caseconverter/workflows/PHP%20Composer/badge.svg)
 
+[![Coverage Status](https://coveralls.io/repos/github/opintat/caseconverter/badge.svg?branch=master)](https://coveralls.io/github/opintat/caseconverter?branch=master)
+
 # CaseConverter
 
 CaseConverter is a PHP Modul to convert
