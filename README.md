@@ -1,3 +1,5 @@
+![PHP Composer](https://github.com/opintat/caseconverter/workflows/PHP%20Composer/badge.svg)
+
 # CaseConverter
 
 CaseConverter is a PHP Modul to convert

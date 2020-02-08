@@ -15,6 +15,8 @@ use Opintat\Converter\Splitter\SplitterFactory;
  */
 final class Converter
 {
+
+
     /**
      * @var string[]
      */
