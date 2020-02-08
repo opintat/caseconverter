@@ -19,7 +19,8 @@ First require vendor autoload.
 require 'vendor/autoload.php';
 ```
 
-Input type will be detected automatic.
+Automatic input type detection.
+
 ```
 $converter = new Converter();
 
