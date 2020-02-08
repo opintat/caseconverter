@@ -23,7 +23,7 @@ jobs:
       run: ./vendor/bin/phpstan analyse --level 8 src tests
 
     - name: Run phpunit
-      run: ./vendor/bin/phpunit --colors=always --coverage-html coverage tests
+      run: ./vendor/bin/phpunit --coverage-clover coverage/lcov.info
 
     - name: Coveralls
       uses: coverallsapp/github-action@master
